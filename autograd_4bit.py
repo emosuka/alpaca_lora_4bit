@@ -192,6 +192,7 @@ def load_llama_model_4bit_low_ram(config_path, model_path, groupsize=-1, half=Fa
 
     with accelerate.init_empty_weights():
         config = LlamaConfig.from_pretrained(config_path)
+        config.max_position_embeddings = max(seqlen, config.max_position_embeddings)
         model = LlamaForCausalLM(config)
         model = model.eval()
         layers = find_layers(model)
@@ -212,7 +213,13 @@ def load_llama_model_4bit_low_ram(config_path, model_path, groupsize=-1, half=Fa
         model_to_half(model)
 
     tokenizer = LlamaTokenizer.from_pretrained(config_path)
+
     tokenizer.truncation_side = 'left'
+
+    # TODO: Figure out why special tokens aren't correctly parsed from tokenizer config in current Transformers version
+
+    tokenizer.bos_token_id = 1
+    tokenizer.eos_token_id = 2
 
     print(Style.BRIGHT + Fore.GREEN + f"Loaded the model in {(time.time()-t0):.2f} seconds.")
 
@@ -230,6 +237,7 @@ def load_llama_model_4bit_low_ram_and_offload(config_path, model_path, lora_path
 
     with accelerate.init_empty_weights():
         config = LlamaConfig.from_pretrained(config_path)
+        config.max_position_embeddings = max(seqlen, config.max_position_embeddings)
         model = LlamaForCausalLM(config)
         model = model.eval()
         layers = find_layers(model)

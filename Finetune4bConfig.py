@@ -8,6 +8,7 @@ class Finetune4bConfig:
                  mbatch_size: int, batch_size: int,
                  epochs: int, lr: float,
                  cutoff_len: int,
+                 max_position_embeddings: int,
                  lora_r: int, lora_alpha: int, lora_dropout: float,
                  val_set_size: float,
                  gradient_checkpointing: bool,
@@ -65,6 +66,7 @@ class Finetune4bConfig:
         self.epochs = epochs
         self.lr = lr
         self.cutoff_len = cutoff_len
+        self.max_position_embeddings = max_position_embeddings
         self.lora_r = lora_r
         self.lora_alpha = lora_alpha
         self.lora_dropout = 0 if gradient_checkpointing else lora_dropout # should be 0 if gradient checkpointing is on

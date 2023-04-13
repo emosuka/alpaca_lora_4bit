@@ -18,7 +18,7 @@ def parse_commandline():
     parser_training = parser.add_argument_group("training")
 
     # Config args group
-    parser_config.add_argument("--ds_type", choices=["txt", "alpaca", "gpt4all"], default="alpaca", required=False,
+    parser_config.add_argument("--ds_type", choices=["txt", "alpaca", "gpt4all", "plaintext"], default="alpaca", required=False,
         help="Dataset structure format. Default: %(default)s"
     )
     parser_config.add_argument("--lora_out_dir", default="alpaca_lora", required=False,
@@ -43,6 +43,7 @@ def parse_commandline():
     parser_training.add_argument("--epochs", default=3, type=int, help="Epochs. Default: %(default)s")
     parser_training.add_argument("--lr", default=2e-4, type=float, help="Learning rate. Default: %(default)s")
     parser_training.add_argument("--cutoff_len", default=256, type=int, help="Default: %(default)s")
+    parser_training.add_argument("--max_position_embeddings", default=2048, type=int, help="Extend LLaMA position embedding table to embed sequences longer than the default. Default: %(default)s")
     parser_training.add_argument("--lora_r", default=8, type=int, help="Default: %(default)s")
     parser_training.add_argument("--lora_alpha", default=16, type=int, help="Default: %(default)s")
     parser_training.add_argument("--lora_dropout", default=0.05, type=float, help="Default: %(default)s")
@@ -93,7 +94,8 @@ def get_config() -> Finetune4bConfig:
         epochs=args["epochs"], 
         lr=args["lr"],
         cutoff_len=args["cutoff_len"],
-        lora_r=args["lora_r"], 
+        max_position_embeddings=args["max_position_embeddings"],
+        lora_r=args["lora_r"],
         lora_alpha=args["lora_alpha"], 
         lora_dropout=args["lora_dropout"],
         val_set_size=args["val_set_size"],

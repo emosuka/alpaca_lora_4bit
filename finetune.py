@@ -61,7 +61,8 @@ model, tokenizer = load_llama_model_4bit_low_ram(ft_config.llama_q4_config_dir,
                                                   ft_config.llama_q4_model,
                                                   device_map=ft_config.device_map,
                                                   groupsize=ft_config.groupsize,
-                                                  is_v1_model=ft_config.v1)
+                                                  is_v1_model=ft_config.v1,
+                                                  seqlen = ft_config.max_position_embeddings)
 
 # Config Lora
 lora_config = LoraConfig(
@@ -111,6 +112,9 @@ if not ft_config.skip:
     elif ft_config.ds_type == "gpt4all" and not ft_config.skip:
         #### GPT4All Data
         data = train_data.TrainGPT4All(ft_config.dataset, ft_config.val_set_size, tokenizer, ft_config.cutoff_len)
+    elif ft_config.ds_type == "plaintext" and not ft_config.skip:
+        #### Plaintext JSON Data
+        data = train_data.TrainPlaintext(ft_config.dataset, ft_config.val_set_size, tokenizer, ft_config.cutoff_len)
     else:
         raise NotImplementedError("ERROR: Unknown dataset format")
     data.prepare_data(thd=ft_config.txt_row_thd, use_eos_token=ft_config.use_eos_token)
