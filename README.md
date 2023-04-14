@@ -1,4 +1,4 @@
-# Alpaca Lora 4bit, long-range and other experiments
+# 4bit quantized LLaMA, long-range (and other) experiments using LoRA
 
 Forked from: https://github.com/johnsmith0031/alpaca_lora_4bit.git
 
@@ -38,7 +38,7 @@ The only change is to pre-allocate tensors for the key/value cache with enough s
 
 While it shouldn't make a big difference in theory, I'm pretty sure that the repeated concatenations made for a very unfortunate pattern of memory allocations, causing bad fragmentation and lots of wasted VRAM. Enabling the cache ultimately used up several times the amount of memory actually needed for the cache itself.
 
-The pre-allocated cache needs less copying of tensor data, but on the other hand cache locality is worse, so I'm not sure if it's faster or slower this way.  
+The pre-allocated cache needs less copying of tensor data, but on the other hand cache locality is worse, so I'm not sure if it's faster or slower this way. It does use considerably less VRAM though, over the full sequence length.
 
 ## Other notes
 
