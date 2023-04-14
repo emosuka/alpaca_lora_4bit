@@ -286,8 +286,7 @@ class TrainPlaintext(ATrainData):
                 prompt + self.tokenizer.eos_token,
                 truncation=True,
                 max_length=self.cutoff_len,
-                padding=False,
-            )
+                padding=False,            )
             if (
                 result["input_ids"][-1] != self.tokenizer.eos_token_id
                 and len(result["input_ids"]) < self.cutoff_len
@@ -322,7 +321,7 @@ class TrainPlaintext(ATrainData):
 
     # Auxiliary methods
     def generate_prompt(self, data_point, **kwargs):
-        return "The following long text contains a lot of very useful information. Please read it and learn something.\n\n### Text:\n" + data_point["text"]
+        return data_point["text"]
 
     def generate_and_tokenize_prompt(self, data_point, **kwargs):
         prompt = self.generate_prompt(data_point, **kwargs)
