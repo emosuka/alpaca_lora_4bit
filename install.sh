@@ -1,3 +1,5 @@
+# NOT AN INSTALLER SCRIPT, just something I used to spin up a server instance
+
 apt update
 apt install nano
 apt upgrade python3
@@ -15,7 +17,3 @@ pip install bitsandbytes
 pip install colorama
 pip install xformers
 pip install sentencepiece
-
-
-
-
